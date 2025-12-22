@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spazio Karate </title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+
+    /* Header trasparente di default */
+    #mainNav {
+      background-color: transparent;
+      transition: background-color 0.4s ease, box-shadow 0.3s ease;
+    }
+
+/* Quando l'utente scrolla */
+    #mainNav.scrolled {
+    background-color: rgba(2, 67, 196, 0.95); /* Blu con leggera trasparenza */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    #mainNav a, #mainNav span {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: #222;
+      background-color: #fff;
+    }
+
+    /* Hero con sfondo fisso */
+    .hero {
+      background-image: url("https://images.unsplash.com/photo-1599058917212-d750089bc07f?auto=format&fit=crop&w=1400&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* fa rimanere l'immagine mentre scorri */
+      height: 100vh; /* copre l'intero schermo */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    /* overlay blu trasparente per rendere l’immagine più premium */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 67, 196, 0.95);
+      z-index: 0;
+    }
+    .hero-video {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100vw;
+      height:100vh;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 2; /* sopra overlay e video */
+      color: white;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* scurisce leggermente */
+      z-index: 1;
+    }
+
+    .course-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 1rem;
+      padding: 2rem;
+      background-color: white;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    /* Overlay scuro che copre lo schermo */
+    .course-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1050;
+      padding: 2rem;
+    }
+
+    /* Card espansa */
+    .expanded-card {
+      background: white;
+      border-radius: 1.5rem;
+      max-width: 900px;
+      width: 100%;
+      overflow: hidden;
+      animation: growIn 0.4s ease;
+      position: relative;
+    }
+
+    @keyframes growIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .expanded-card .content {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .expanded-card .text {
+      flex: 1 1 50%;
+      padding: 2rem;
+      text-align: left;
+    }
+
+    .expanded-card .media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+    }
+
+    .expanded-card .image {
+      flex: 1 1 50%;
+      background: #f7f7f7;
+    }
+
+    .expanded-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .expanded-card .media {
+        pointer-events: none;
+        flex: 1 1 50%;
+        background: #000;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #002b80;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .close-btn:hover {
+      color: #0066ff;
+      transform: scale(1.1);
+    }
+
+    .btn-main {
+      background-color: white;
+      color: #0042c5;
+      font-weight: 600;
+      border-radius: 1rem;
+      transition: 0.3s;
+    }
+
+    .btn-main:hover {
+      background-color: #f2f2f2;
+      color: #0042c5;
+    }
+
+    .link-hover:hover {
+      color:#807d7d
+    }
+
+    header {
+      background-color: #0042c5;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    .course-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s ease;
+      background-color: white;
+      display: flex;
+      text-align: center;
+      flex-direction: column;
+      justify-content: center; /* centro verticalmente */
+      align-items: center;    /* centro orizzontalmente */
+      text-align: center;     /* assicura che i testi siano centrati */
+      height: 100%;           /* assicura che il flex prenda tutta l’altezza della colonna */
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      padding: 60px 0;
+    }
+
+    /* --- GALLERY --- */
+#gallery {
+  padding: 80px 0;
+  background-color: #f9f9f9;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* --- LIGHTBOX --- */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 2rem;
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.3s ease;
+}
+
+.lightbox-overlay img {
+  max-width: 90%;
+  max-height: 80vh;
+  object-fit: contain;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  font-size: 2.5rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+  z-index: 2001;
+}
+
+.lightbox-close:hover {
+  color: #66a3ff;
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* --- FRECCE DI NAVIGAZIONE --- */
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 2.5rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 50%;
+  transition: background 0.3s, transform 0.2s;
+  z-index: 2001;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(255,255,255,0.35);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev { left: 40px; }
+.lightbox-next { right: 40px; }
+
+@media (max-width: 768px) {
+  .lightbox-prev, .lightbox-next {
+    font-size: 2rem;
+    left: 20px;
+    right: 20px;
+  }
+}
+
+.team-section {
+  background: #111;
+}
+
+.team-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.team-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.team-thumb {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border: 2px solid #007bff;
+}
+
+/* Overlay */
+.expanded-team-card {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expanded-team-card .overlay-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.expanded-team-card .expanded-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  text-align: left;
+}
+
+.expanded-team-card .image img {
+  width: 380px;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .expanded-team-card .expanded-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .expanded-team-card .image img {
+    width: 100%;
+  }
+}
+.close-team-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  color: white;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.close-team-btn:hover {
+  transform: scale(1.1);
+  color: #007bff;
+}
+
+.karate-game-section {
+  background: linear-gradient(135deg, #ffcc00, #ff6666);
+  position: relative;
+  overflow: hidden;
+}
+
+.karate-game-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/cartoon-pattern.png') repeat;
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.karate-game-section .cartoon-img {
+  border: 4px solid #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.karate-game-section .game-text {
+  background-color: rgba(255, 102, 102, 0.85);
+  z-index: 2;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.karate-game-section h2 {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.karate-game-section p {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+ <header id="mainNav" class="py-3 fixed-top">
+  <div class="container d-flex justify-content-between align-items-center text-white">
+    <a href="#top" class="d-flex align-items-center text-white text-decoration-none">
+      <img src="Senza titolo-4.png" alt="Logo Spazio Karate" width="50" height="50" class="me-2">
+      <span class="fw-bold fs-6">Spazio Karate</span>
+    </a>
+    <a href="#contatti" class="btn btn-main px-4 py-2">Contattaci</a>
+  </div>
+</header>
+
+
+  <!-- Hero con sfondo -->
+  <section class="hero">
+    
+    <div class="hero-content container">
+      <h1 class="display-4 fw-bold mb-3">Forza. Disciplina. Armonia.</h1>
+      <p class="lead mb-4">Scopri l’arte del Karate in un ambiente moderno e accogliente.</p>
+      <a href="#orari" class="btn btn-main px-5 py-3">Scopri i corsi</a>
+    </div>
+
+    <video autoplay muted loop playsinline class="hero-video">
+    <source src="video bambini.mov" type="video/mp4" />
+    Il tuo browser non supporta i video HTML5.
+  </video>
+
+  </section>
+
+  <!-- Corsi -->
+ <section id="orari">
+  <div class="container text-center">
+    <h2 class="fw-bold text-primary mb-5">I nostri corsi</h2>
+
+    <div class="row g-4 justify-content-center">
+      <!-- Card 1 -->
+      <div class="col-12 col-md-4">
+        <div class="course-card h-100"
+             data-title="Karate Principianti"
+             data-description="Il corso di Karate per bambini di Spazio Karate è pensato per i più piccoli, combinando divertimento, tecnica e crescita personale.  Ogni lezione prevede esercizi motori, giochi educativi e attività di gruppo, che permettono di sviluppare coordinazione, agilità, equilibrio e fiducia in sé stessi.
+
+Oltre agli aspetti fisici, il corso insegna valori fondamentali come il rispetto, la concentrazione, l’autocontrollo e la collaborazione, aiutando ogni bambino a progredire secondo il proprio ritmo. Gli istruttori qualificati guidano i piccoli karateka in un percorso sicuro e stimolante, dove l’apprendimento delle tecniche di base si unisce al divertimento e alla scoperta della disciplina.
+
+Una proposta ideale per chi vuole avvicinare i propri figli al karate in un ambiente positivo, educativo e motivante."
+             data-video="video bambini.mov">
+          <h4 class="text-primary fw-bold mb-3">Karate Principianti</h4>
+          <p>Un percorso divertente e sicuro per bambini dai 5 ai 12 anni, dove imparano le basi del karate, migliorano coordinazione e equilibrio, e sviluppano valori come rispetto, concentrazione e autocontrollo.
+            Ogni lezione combina gioco e disciplina per crescere divertendosi.</p>
+          <p class="fw-semibold text-primary mt-3">Lunedì e Mercoledì — 17:00 / 18:00</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-12 col-md-4">
+        <div class="course-card h-100"
+             data-title="Karate Avanzato"
+             data-description="Il corso di Karate per adulti di Spazio Karate offre un percorso completo per migliorare tecnica, forza, agilità e resistenza.
+             Le lezioni prevedono esercizi pratici, applicazioni di kata e kumite, e sessioni mirate allo sviluppo della coordinazione e della consapevolezza corporea.
+             Oltre all’aspetto fisico, il corso favorisce disciplina, concentrazione e autocontrollo, strumenti preziosi anche nella vita quotidiana. Gli istruttori qualificati guidano ogni partecipante con attenzione e professionalità, creando un ambiente sicuro, stimolante e motivante.
+             Perfetto per chi desidera praticare karate per migliorare forma fisica, autostima e benessere generale, unendo allenamento e valori tradizionali dell’arte marziale."
+             data-video="video-adulti.mp4">
+          <h4 class="text-primary fw-bold mb-3">Karate Avanzato</h4>
+          <p>Allenamenti mirati per adulti di tutti i livelli, pensati per sviluppare tecnica, forza, resistenza e coordinazione.
+             Ogni lezione combina esercizi pratici, applicazioni tecniche e disciplina, promuovendo concentrazione, autocontrollo e benessere fisico e mentale.</p>
+          <p class="fw-semibold text-primary mt-3">Martedì e Giovedì — 19:00 / 20:30</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-12 col-md-4">
+        <div class="course-card h-100"
+             data-title="Karate Agonisti"
+             data-description="Il corso di Karate Agonisti di Spazio Karate è pensato per chi desidera competere a livello regionale e nazionale. Le lezioni avanzate combinano allenamenti intensivi di tecnica, kata, kumite e strategie di gara, con un focus sulla preparazione fisica, resistenza, agilità e reattività.
+
+Gli istruttori, con esperienza agonistica e certificazioni, guidano ogni atleta nella crescita personale e sportiva, sviluppando disciplina, concentrazione, autocontrollo e spirito di squadra. Il corso prepara gli allievi a partecipare a competizioni ufficiali, valorizzando sia la performance individuale che la collaborazione nel gruppo, in un contesto sicuro e motivante.
+
+Perfetto per chi vuole portare il proprio karate al livello successivo, unendo tecnica, strategia e passione per la competizione."
+             data-video="Campionati italiani Andrea.mov">
+          <h4 class="text-primary fw-bold mb-3">Karate Agonisti</h4>
+          <p>Un percorso avanzato per giovani e adulti orientato alla competizione, focalizzato su tecnica, strategia e preparazione fisica.
+             Ideale per chi vuole migliorare le proprie performance e partecipare a gare ufficiali, sviluppando disciplina, resilienza e spirito sportivo.</p>
+          <p class="fw-semibold text-primary mt-3">Sabato — 10:00 / 12:00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay per l'espansione -->
+  <div id="courseOverlay" class="course-overlay d-none">
+    <div class="expanded-card">
+      <button class="close-btn">&times;</button>
+      <div class="content">
+        <div class="text">
+          <h3 id="expandedTitle"></h3>
+          <p id="expandedDescription"></p>
+        </div>
+        <div class="media">
+          <video id="expandedVideo" autoplay muted loop playsinline class="w-100 rounded-bottom"></video>
+          <img id="expandedImage" src="foto agonisti.JPG" alt="" class="w-100 d-none">
+        </div>
+      </div>
+    </div>
+  </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- CTA -->
+  <section class="text-center text-white" style="background-color: #0042c5;">
+
+
+    <div class="container">
+      <h2 class="fw-bold mb-3">Vieni a trovarci nelle nostre sedi</h2>
+      <p class="lead mb-4">Allenati con maestri qualificati e scopri la forza dentro di te.</p>
+      <a href="https://maps.google.com?q=spazio+karate" target="_blank" class="btn btn-main px-5 py-3">Raggiungici</a>
+    </div>
+  </section>
+
+<section id="team" class="team-section py-5 text-white">
+  <div class="container">
+    <h2 class="text-center mb-5 fw-bold">I Nostri Tecnici</h2>
+    <div class="row g-4 justify-content-center">
+
+      <!-- Card 1 -->
+      <div class="col-md-4">
+        <div class="team-card h-100"
+             data-name="Roberta Torresi"
+             data-role="Istruttore Kumite"
+             data-description="Roberta Torresi è un punto di riferimento di Spazio Karate per la sua esperienza e dedizione.
+Istruttrice qualificata e Tecnico FISDIR, si occupa dell’inclusione sportiva di atleti con disabilità, promuovendo un karate accessibile e formativo per tutti.
+
+Con oltre dieci anni di esperienza nel kumite, prima come atleta – dove ha conquistato il titolo italiano Master femminile – e poi come tecnico, Roberta ha maturato una profonda conoscenza delle dinamiche agonistiche e didattiche del karate moderno.
+
+Attualmente ricopre il ruolo di Commissario Tecnico per lo sviluppo del settore Karate U14 a livello nazionale, contribuendo alla crescita dei giovani atleti italiani e alla diffusione dei valori educativi della disciplina.
+
+In Spazio Karate, Roberta unisce passione, professionalità e attenzione umana, accompagnando ogni allievo nel proprio percorso di crescita sportiva e personale."
+             data-image="Roberta Torresi.JPG">
+          <div class="d-flex align-items-center gap-3">
+            <img src="Roberta Torresi.JPG" alt="Marco Rossi" class="team-thumb rounded-circle">
+            <div>
+              <h5 class="text-primary mb-1">Roberta Torresi</h5>
+              <p class="mb-0 small">Allenatore Kumite <br>
+                “La vera vittoria è superare i propri limiti.”
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-4">
+        <div class="team-card h-100"
+             data-name="Andrea Lattanzi"
+             data-role="Istruttore Specializzat in didattica per bambini"
+             data-description="Andrea Lattanzi è istruttore di Spazio Karate specializzato nella didattica per bambini.
+Laureato in Scienze Motorie, unisce una solida preparazione accademica a un approccio educativo attento e coinvolgente, capace di stimolare concentrazione, coordinazione e rispetto delle regole fin dalle prime lezioni.
+
+La sua esperienza agonistica di alto livello – coronata da un titolo italiano Under 20 e un secondo posto ai Campionati Italiani Assoluti – gli permette di trasmettere ai giovani atleti non solo la tecnica, ma anche la mentalità vincente e il valore della disciplina sportiva.
+
+Con entusiasmo e professionalità, Andrea contribuisce ogni giorno alla crescita dei piccoli karateka di Spazio Karate, accompagnandoli nel loro percorso sportivo e personale."
+             data-image="Andrea Lattanzi.JPG">
+          <div class="d-flex align-items-center gap-3">
+            <img src="Andrea Lattanzi.JPG" alt="Laura Bianchi" class="team-thumb rounded-circle">
+            <div>
+              <h5 class="text-primary mb-1">Andrea Lattanzi</h5>
+              <p class="mb-0 small">Istruttore didattica per bambini<br>
+               “Imparare divertendosi, crescere combattendo.” </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-md-4">
+        <div class="team-card h-100"
+             data-name="Lidio Farroni"
+             data-role="istruttore Kata"
+             data-description="Sensei Luca Verdi guida il gruppo agonisti con disciplina e passione. È cintura nera 5° Dan e ha partecipato a competizioni internazionali come atleta e coach."
+             data-image="Lidio Farroni.JPG">
+          <div class="d-flex align-items-center gap-3">
+            <img src="Lidio Farroni.JPG" alt="Luca Verdi" class="team-thumb rounded-circle">
+            <div>
+              <h5 class="text-primary mb-1">Lidio Farroni</h5>
+              <p class="mb-0 small">Allenatore Kata</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Overlay -->
+<div class="expanded-team-card d-none">
+  <div class="overlay-bg"></div>
+  <div class="expanded-content container d-flex flex-wrap align-items-center justify-content-between position-relative">
+    
+    <!-- Pulsante X -->
+    <button id="closeTeamCardX" class="close-team-btn">&times;</button>
+
+    <div class="image">
+      <img id="teamExpandedImage" src="" alt="Tecnico" class="rounded-4 shadow-lg">
+    </div>
+
+    <div class="text text-white ms-lg-5 mt-4 mt-lg-0">
+      <h3 id="teamExpandedName" class="text-primary fw-bold"></h3>
+      <h5 id="teamExpandedRole" class="fw-semibold mb-3"></h5>
+      <p id="teamExpandedDescription" class="lead"></p>
+      <button id="closeTeamCard" class="btn btn-outline-light mt-3 px-4">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+
+
+<section class="karate-game-section py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <!-- Lato sinistro: immagine -->
+      <div class="col-md-6 mb-4 mb-md-0">
+        <img src="https://images.unsplash.com/photo-1610025259464-1b5a3d5f682f?auto=format&fit=crop&w=800&q=80" 
+             alt="Karate Gioco" 
+             class="img-fluid rounded-4 cartoon-img">
+      </div>
+
+      <!-- Lato destro: descrizione -->
+      <div class="col-md-6">
+        <div class="game-text p-4 rounded-4">
+          <h2 class="text-white fw-bold mb-3">Karate Gioco</h2>
+          <p class="text-white lead">
+            Un corso divertente e dinamico pensato per avvicinare i più piccoli al mondo del Karate attraverso giochi, sfide e attività creative! 
+            I bambini imparano le basi dell’arte marziale mentre si divertono, sviluppando coordinazione, equilibrio e spirito di squadra. 
+          </p>
+          <p class="text-white fw-semibold mt-3">
+            Età consigliata: 5–10 anni<br>
+            Orari: Lunedì e Mercoledì — 16:30 / 17:30
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <!-- Contatti -->
+  <footer id="contatti" class="text-center">
+    <div class="container">
+      <h3 class="fw-bold text-primary mb-3">Contatti</h3>
+    
+      <!--Maps-->
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-signpost-2" viewBox="0 0 16 16">
+       <path d="M7 1.414V2H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h5v1H2.5a1 1 0 0 0-.8.4L.725 8.7a.5.5 0 0 0 0 .6l.975 1.3a1 1 0 0 0 .8.4H7v5h2v-5h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H9V6h4.5a1 1 0 0 0 .8-.4l.975-1.3a.5.5 0 0 0 0-.6L14.3 2.4a1 1 0 0 0-.8-.4H9v-.586a1 1 0 0 0-2 0M13.5 3l.75 1-.75 1H2V3zm.5 5v2H2.5l-.75-1 .75-1z"/>
+       </svg>
+       <a href="https://maps.google.com?q=spazio+karate" target="_blank" class="text-decoration-none link-hover"> Viale della fraternità 3 - Tolentino (MC)</a><br>
+      
+       <!--Maps-->
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-signpost-2" viewBox="0 0 16 16">
+       <path d="M7 1.414V2H2a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h5v1H2.5a1 1 0 0 0-.8.4L.725 8.7a.5.5 0 0 0 0 .6l.975 1.3a1 1 0 0 0 .8.4H7v5h2v-5h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H9V6h4.5a1 1 0 0 0 .8-.4l.975-1.3a.5.5 0 0 0 0-.6L14.3 2.4a1 1 0 0 0-.8-.4H9v-.586a1 1 0 0 0-2 0M13.5 3l.75 1-.75 1H2V3zm.5 5v2H2.5l-.75-1 .75-1z"/>
+       </svg>
+       <a href="https://maps.app.goo.gl/JoP5zNbyputTiR3o7" target="_blank" class="text-decoration-none link-hover"> Via Volturno, Piediripa (MC)</a><br>
+      
+       <!--Telefono-->
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" viewBox="0 0 16 16">
+       <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+       </svg>
+       <a href="tel:3383743241" target="_blank" class="text-decoration-none link-hover"> +39 338 374 3241</a><br>
+     
+       <!--instagram-->
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
+      <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+      </svg><a href="https://www.instagram.com/spazio_karate?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="text-decoration-none link-hover"> spazio_karate</a><br>
+      </a>
+      
+<!--mail-->
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-at-fill" viewBox="0 0 16 16">
+      <path d="M2 2A2 2 0 0 0 .05 3.555L8 8.414l7.95-4.859A2 2 0 0 0 14 2zm-2 9.8V4.698l5.803 3.546zm6.761-2.97-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 9.671V4.697l-5.803 3.546.338.208A4.5 4.5 0 0 1 12.5 8c1.414 0 2.675.652 3.5 1.671"/>
+      <path d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791"/>
+      </svg> <a href="mailto: info@spaziokarate.it" target="_blank" class="text-decoration-none link-hover"> info@spaziokarate.it</a>
+     
+   
+<!-- Script -->
+
+<!-- Trasparenza della barra -->
+  <script>
+  window.addEventListener('scroll', function() {
+    const header = document.getElementById('mainNav');
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+
+  
+</script>
+
+<!-- maximize e minimize delle card -->
+<script>
+  const cards = document.querySelectorAll('.course-card');
+  const overlay = document.getElementById('courseOverlay');
+  const title = document.getElementById('expandedTitle');
+  const desc = document.getElementById('expandedDescription');
+  const img = document.getElementById('expandedImage');
+  const video = document.getElementById('expandedVideo');
+  const closeBtn = overlay.querySelector('.close-btn');
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      title.textContent = card.dataset.title;
+      desc.textContent = card.dataset.description;
+
+      const videoSrc = card.dataset.video;
+      const imageSrc = card.dataset.image;
+
+      if (videoSrc) {
+        // Imposta il video e lo prepara
+        video.src = videoSrc;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.removeAttribute('controls');
+        video.classList.remove('d-none');
+        img.classList.add('d-none');
+
+        // Avvia il video solo dopo che l’overlay è visibile
+        setTimeout(() => video.play(), 200);
+      } 
+      else if (imageSrc) {
+        img.src = imageSrc;
+        img.classList.remove('d-none');
+        video.classList.add('d-none');
+        video.removeAttribute('src');
+      }
+
+      overlay.classList.remove('d-none');
+    });
+  });
+
+  // Chiudi overlay con X o clic esterno
+  function closeOverlay() {
+    overlay.classList.add('d-none');
+    // Ferma il video e lo scarica dalla memoria
+    video.pause();
+    video.removeAttribute('src');
+  }
+
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeOverlay();
+  });
+</script>
+<script>
+const teamCards = document.querySelectorAll('.team-card');
+const expandedTeamCard = document.querySelector('.expanded-team-card');
+const overlayBg = document.querySelector('.overlay-bg');
+const teamImage = document.getElementById('teamExpandedImage');
+const teamName = document.getElementById('teamExpandedName');
+const teamRole = document.getElementById('teamExpandedRole');
+const teamDesc = document.getElementById('teamExpandedDescription');
+const closeTeamCard = document.getElementById('closeTeamCard');
+const closeTeamCardX = document.getElementById('closeTeamCardX');
+
+// Apertura overlay
+teamCards.forEach(card => {
+  card.addEventListener('click', () => {
+    teamImage.src = card.dataset.image;
+    teamName.textContent = card.dataset.name;
+    teamRole.textContent = card.dataset.role;
+    teamDesc.textContent = card.dataset.description;
+    expandedTeamCard.classList.remove('d-none');
+  });
+});
+
+// Chiusura tramite bottone "Chiudi"
+closeTeamCard.addEventListener('click', () => {
+  expandedTeamCard.classList.add('d-none');
+});
+
+// Chiusura tramite X
+closeTeamCardX.addEventListener('click', () => {
+  expandedTeamCard.classList.add('d-none');
+});
+
+// Chiusura cliccando fuori dal contenuto
+overlayBg.addEventListener('click', () => {
+  expandedTeamCard.classList.add('d-none');
+});
+
+</script>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
