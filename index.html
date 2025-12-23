@@ -710,7 +710,7 @@ Con entusiasmo e professionalità, Andrea contribuisce ogni giorno alla crescita
 
       const videoSrc = card.dataset.video;
       const imageSrc = card.dataset.image;
-
+    
      if (videoSrc) {
   const ytUrl =
     `https://www.youtube.com/embed/${videoSrc}?autoplay=1&mute=1&controls=1&rel=0&playsinline=1`;
@@ -724,6 +724,7 @@ Con entusiasmo e professionalità, Andrea contribuisce ogni giorno alla crescita
     video.src = ""; // unico modo corretto per fermare YouTube
   }
   });
+  })
 
   // Chiudi overlay con X o clic esterno
   function closeOverlay() {
