@@ -57,12 +57,19 @@
       z-index: 0;
     }
     .hero-video {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100vw;
-      height:100vh;
-      object-fit: cover;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120vw;
+      height: 120vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-video-wrapper {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
       z-index: 0;
     }
 
@@ -435,11 +442,14 @@
       <a href="#orari" class="btn btn-main px-5 py-3">Scopri i corsi</a>
     </div>
 
-    <iframe
-  class="hero-video"
-  src="https://www.youtube.com/embed/rWvAjndOgWY?autoplay=1&mute=1&controls=0&loop=1&playlist=rWvAjndOgWY&playsinline=1"
-  allow="autoplay"
-></iframe>
+    <div class="hero-video-wrapper">
+  <iframe
+    class="hero-video"
+    src="https://www.youtube.com/embed/rWvAjndOgWY?autoplay=1&mute=1&controls=0&loop=1&playlist=rWvAjndOgWY&playsinline=1"
+    allow="autoplay"
+    frameborder="0"
+  ></iframe>
+</div>
 
     <source src="video bambini.mov" type="video/mp4" />
     Il tuo browser non supporta i video HTML5.
